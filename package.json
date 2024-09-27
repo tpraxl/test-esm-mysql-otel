@@ -1,0 +1,22 @@
+{
+  "name": "test-esm-mysql-otel",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "npm run start:callback-based",
+    "start:callback-based": "node --import ./otel-setup.js index.js",
+    "start:promise-based": "node --import ./otel-setup.js index-promise.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@opentelemetry/api": "^1.9.0",
+    "@opentelemetry/instrumentation": "^0.53.0",
+    "@opentelemetry/instrumentation-mysql2": "^0.41.0",
+    "@opentelemetry/node": "^0.24.0",
+    "mysql2": "^3.11.3"
+  }
+}
