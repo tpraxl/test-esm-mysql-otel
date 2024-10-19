@@ -14,8 +14,6 @@ await connection.execute(`
                                           value VARCHAR(255)
     )
 `);
-
 const [result] = await connection.execute('INSERT INTO test_table2 (value) VALUES (?)', ['Sample Value']);
-console.log(`Inserted row with ID: ${result.insertId}`);
-
+const queryResult = await connection.query('SELECT * FROM test_table2')
 await connection.end();

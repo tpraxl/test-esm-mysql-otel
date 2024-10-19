@@ -15,44 +15,41 @@ connection.connect((err) => {
         console.error('Error connecting to the database:', err.stack);
         return;
     }
-    console.log('Connected to the database.');
-
     const dropTableQuery = `DROP TABLE IF EXISTS test_table2`;
-    connection.query(dropTableQuery, (err, results) => {
+    connection.execute(dropTableQuery, (err, results) => {
         if (err) {
             console.error('Error executing query:', err.stack);
             return;
         }
-        console.log('Table dropped if existed.');
-
         const createTableQuery = `
             CREATE TABLE test_table2 (
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 value VARCHAR(255)
             )
         `;
-        connection.query(createTableQuery, (err, results) => {
+        connection.execute(createTableQuery, (err, results) => {
             if (err) {
                 console.error('Error executing query:', err.stack);
                 return;
             }
-            console.log('Table created.');
-
             const insertQuery = 'INSERT INTO test_table2 (value) VALUES (?)';
-            connection.query(insertQuery, ['Sample Value'], (err, results) => {
+            connection.execute(insertQuery, ['Sample Value'], (err, results) => {
                 if (err) {
                     console.error('Error executing query:', err.stack);
                     return;
                 }
-                console.log(`Inserted row with ID: ${results.insertId}`);
-
+                connection.query('SELECT * FROM test_table2', (err, results) => {
+                    if(err) {
+                        console.error('Error querying', err.stack)
+                        return;
+                    }
+                })
                 // Close the connection
                 connection.end((err) => {
                     if (err) {
                         console.error('Error closing the connection:', err.stack);
                         return;
                     }
-                    console.log('Connection closed.');
                 });
             });
         });

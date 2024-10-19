@@ -17,6 +17,7 @@
     "@opentelemetry/instrumentation": "^0.53.0",
     "@opentelemetry/instrumentation-mysql2": "^0.41.0",
     "@opentelemetry/node": "^0.24.0",
-    "mysql2": "^3.11.3"
+    "mysql2": "^3.11.3",
+    "node-mysql2": "^1.0.0"
   }
 }
