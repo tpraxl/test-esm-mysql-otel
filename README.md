@@ -14,11 +14,12 @@ npm start
 npm run start:promise-based
 ```
 
-## Checkout mysql2 into a local folder and provide the fixed version
+## Checkout tpraxl/mysql2 into a local folder and provide the fixed version
 
 ```bash
+git clone https://github.com/tpraxl/node-mysql2.git
 cd <mysql2-local-folder>
-git checkout fix/circular-dependencies
+git checkout fix/circular-dependencies-promise
 npm pack
 cd <test-esm-mysql-otel-local-folder>
 npm i <mysql2-local-folder>/mysql*.tgz
@@ -63,6 +64,8 @@ callback.js
 
 module.exports = require('./index.js');
 ```
+
+See https://github.com/tpraxl/node-mysql2/tree/fix/open-telemetry-not-activated for the patched & fixed version of mysql2.
 
 Only with this indirection will the instrumentation activate.
 
