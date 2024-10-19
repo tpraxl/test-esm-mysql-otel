@@ -6,6 +6,7 @@
   "scripts": {
     "start": "npm run start:callback-based",
     "start:callback-based": "node --import ./otel-setup.js index.js",
+    "start:callback-based-cjs": "node --import ./otel-setup.js index.cjs",
     "start:promise-based": "node --import ./otel-setup.js index-promise.js"
   },
   "keywords": [],
@@ -17,7 +18,7 @@
     "@opentelemetry/instrumentation": "^0.53.0",
     "@opentelemetry/instrumentation-mysql2": "^0.41.0",
     "@opentelemetry/node": "^0.24.0",
-    "mysql2": "^3.11.3",
+    "mysql2": "file:../node-mysql2/mysql2-3.11.3.tgz",
     "node-mysql2": "^1.0.0"
   }
 }

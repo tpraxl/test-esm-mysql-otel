@@ -1,12 +1,4 @@
-// Instrumentation not working with resolved circular dependencies in mysql2:
-import mysql from 'mysql2'
-// Instrumentation would only work if we used
-// import mysql from 'mysql2/callback';
-// along with mysql2 providing the proper export "./callback": "./callback.js"
-// and with mysql2 callback.js having module.exports = require('./index.js');
-// It seems to be necessary to have a file requiring the file that represents the main module.
-// Otherwise, the instrumentation is not activated.
-// @see index.cjs and index-promise.js for working versions.
+const mysql = require('mysql2');
 
 // Create a connection
 const connection = mysql.createConnection({
