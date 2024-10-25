@@ -2,6 +2,10 @@
 
 This is a test project to reproduce encountered @opentelemetry/instrumentation-mysql2 errors.
 
+TLDR;  
+Use `--experimental-loader=@opentelemetry/instrumentation/hook.mjs` as is described here https://github.com/open-telemetry/opentelemetry-js/blob/main/doc/esm-support.md.
+This will give you instrumentation for both, callback-based and promise-based variants of mysql.
+
 ## Running with released versions
 
 ```bash
@@ -9,9 +13,13 @@ docker run --rm -d --name otel-mysql -p 33306:3306 -e MYSQL_ROOT_PASSWORD=rootpw
 
 npm i
 # run the erroneous mode (mysql2)
-npm start
+npm start:callback-based
+# run the fixed mode (mysql)
+npm run start:callback-based-fixed
 # run the working mode (mysql2/promise)
 npm run start:promise-based
+# does not hurt to run it as it is intended:
+npm run start:promise-based-fixed
 ```
 
 ## Checkout tpraxl/mysql2 into a local folder and provide the fixed version
@@ -27,50 +35,13 @@ npm i <mysql2-local-folder>/mysql*.tgz
 
 ```bash
 # run the callback mode (mysql2)
-npm start
+npm start:callback-based
+# run the callback mode with fixed start
+npm start:callback-based-fixed
 # run the working mode (mysql2/promise)
 npm run start:promise-based
 ```
-You will notice that the callback modee no longer crashes, but it will also not be instrumented.
+You will notice that the callback mode no longer crashes, but it will also not be instrumented.
+Running `start:callback-based-fixed` will give you instrumentation. See https://github.com/open-telemetry/opentelemetry-js/blob/main/doc/esm-support.md.
 
-Run `npm run start:callback-based-cjs` to see an instrumented cjs version though.
-
-When used in esm, mysql2 seems to require the following further patch:
-
-package.json (see lines with callback.js)
-```
-"files": [
-    "lib",
-    "typings/mysql",
-    "index.js",
-    "index.d.ts",
-    "callback.js",
-    "promise.js",
-    "promise.d.ts"
-  ],
-  "exports": {
-    ".": "./index.js",
-    "./callback": "./callback.js",
-    "./callback.js": "./callback.js",
-    "./package.json": "./package.json",
-    "./promise": "./promise.js",
-    "./promise.js": "./promise.js"
-  },
-```
-
-callback.js
-```
-'use strict';
-
-module.exports = require('./index.js');
-```
-
-See https://github.com/tpraxl/node-mysql2/tree/fix/open-telemetry-not-activated for the patched & fixed version of mysql2.
-
-Only with this indirection will the instrumentation activate.
-
-@opentelemetry iterates over modules and compares them to the module name specified by the instrumentation ('mysql2'). When this indirection is not there, there will only be sub modules checked against 'mysql2'. 'mysql2' is never encountered. This is not true for the promised based approach, because promise.js requires index.js indirectly by requiring lib/promise_connection.js and possibly others.
-
-I think this is an error in @opentelemetry, but I need to investigate that.
-
-Applying the above described callback.js patch shows that instrumentation for the mysql2 callback mode is possible and working for esm users.
+Run `npm run start:callback-based-cjs` to see an instrumented cjs version.

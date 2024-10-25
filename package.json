@@ -6,8 +6,10 @@
   "scripts": {
     "start": "npm run start:callback-based",
     "start:callback-based": "node --import ./otel-setup.js index.js",
+    "start:callback-based-fixed": "node --experimental-loader=@opentelemetry/instrumentation/hook.mjs --import ./otel-setup.js index.js",
     "start:callback-based-cjs": "node --import ./otel-setup.js index.cjs",
-    "start:promise-based": "node --import ./otel-setup.js index-promise.js"
+    "start:promise-based": "node --import ./otel-setup.js index-promise.js",
+    "start:promise-based-fixed": "node --experimental-loader=@opentelemetry/instrumentation/hook.mjs --import ./otel-setup.js index-promise.js"
   },
   "keywords": [],
   "author": "",
